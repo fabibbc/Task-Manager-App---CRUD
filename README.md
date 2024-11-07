@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -68,3 +69,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+=======
+# Task-Manager-App---CRUD
+A simple task management app built with React and Firebase. It allows users to add, view, delete, and edit tasks in real-time using Firestore. Features include task CRUD operations with live updates. Built with React and Firebase Firestore for efficient and dynamic task management.
+>>>>>>> origin/main
