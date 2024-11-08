@@ -59,12 +59,12 @@ const TaskDelete = ({ task, setTasks, userId }) => {
       ) : (
         <>
           <span>{task.title}</span>
-          <a onClick={() => setIsEditing(true)}>
+          <button className="btnTaskDelete" onClick={() => setIsEditing(true)}>
             <img src={Edit} alt="Edit" className="icon" />
-          </a>
-          <a onClick={handleDelete}>
+          </button>
+          <button className="btnTaskDelete" onClick={handleDelete}>
             <img src={Delete} alt="Delete" className="icon" />
-          </a>
+          </button>
         </>
       )}
     </li>
