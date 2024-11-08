@@ -3,14 +3,15 @@ import { useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../services/firebase";
 
-const TaskForm = () => {
+const TaskForm = (userId) => {
   const [taskTitle, setTaskTitle] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (taskTitle.trim() === "") return; // Evitar enviar tareas vacías
     try {
-      const docRef = await addDoc(collection(db, "tasks"), {
+      console.log(userId);
+      const docRef = await addDoc(collection(db, userId.userId), {
         title: taskTitle,
       });
       console.log("Tarea agregada con ID: ", docRef.id);
@@ -22,17 +23,16 @@ const TaskForm = () => {
 
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="form-add-task" onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Nueva tarea"
         value={taskTitle}
         onChange={(e) => setTaskTitle(e.target.value)}
       />
-      <button type="submit">Agregar tarea</button>
+      <button className="form-btn" type="submit">+</button>
     </form>
   );
 };
 
 export default TaskForm;
-

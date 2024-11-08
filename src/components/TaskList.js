@@ -4,35 +4,41 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../services/firebase";
 import TaskDelete from "./TaskDelete";  // Importar el componente TaskDelete
 
-const TaskList = () => {
+const TaskList = (user) => {
   const [tasks, setTasks] = useState([]);  // Estado para las tareas
 
   useEffect(() => {
-    // Escuchar cambios en la colección 'tasks' en tiempo real
-    const unsubscribe = onSnapshot(
-      collection(db, "tasks"),
-      (snapshot) => {
-        const taskData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setTasks(taskData);  // Actualizar el estado de tareas con los nuevos datos
-      },
-      (error) => {
-        console.log("Error al obtener tareas en tiempo real: ", error);
-      }
-    );
+    if (!user) return; // Ensure userId is available before querying
 
-    // Limpiar el listener cuando el componente se desmonte
-    return () => unsubscribe();
-  }, []);  // Solo se ejecuta una vez cuando el componente se monta
+    console.log(user.userId);
+
+    // Use a query to filter tasks by userId within the "tasks" collection
+    const tasksRef = collection(db, user.userId);
+    console.log(tasksRef);
+    // const q = query(tasksRef, where("userId", "==", user.userId));
+    // console.log(q);
+
+    const unsubscribe = onSnapshot(tasksRef, (snapshot) => {
+      console.log(snapshot);
+      const userTasks = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log(userTasks);
+      setTasks(userTasks); // Update tasks state with user's tasks
+    });
+
+    return () => unsubscribe(); // Clean up listener
+  }, [user, setTasks]);
+
+
 
   return (
     <div>
       <h2>Lista de Tareas</h2>
       <ul>
         {tasks.map((task) => (
-          <TaskDelete key={task.id} task={task} setTasks={setTasks} />  // Pasar setTasks al TaskDelete
+          <TaskDelete key={task.id} task={task} setTasks={setTasks} userId={user} />  // Pasar setTasks al TaskDelete
         ))}
       </ul>
     </div>
