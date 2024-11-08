@@ -98,6 +98,10 @@ body {
     cursor: pointer;
     margin: 0px auto;
   }
+
+  .btnTaskDelete {
+    background-color: transparent;
+  }
   
   /* button:hover {
     background-color: #0056b3;
