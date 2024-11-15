@@ -33,7 +33,7 @@ const Login = () => {
         placeholder="Password"
       />
       <div className="google-btn">
-        <button onClick={handleLogin}>Log In</button>
+        <button className="btn-style" onClick={handleLogin}>Log In</button>
         <GoogleLogin />
       </div>
 

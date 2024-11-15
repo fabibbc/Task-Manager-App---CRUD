@@ -34,13 +34,10 @@ const TaskList = (user) => {
 
 
   return (
-    <div>
-      <h2>Lista de Tareas</h2>
-      <ul>
-        {tasks.map((task) => (
-          <TaskDelete key={task.id} task={task} setTasks={setTasks} userId={user} />  // Pasar setTasks al TaskDelete
-        ))}
-      </ul>
+    <div className="task-container">
+      {tasks.map((task) => (
+        <TaskDelete key={task.id} task={task} setTasks={setTasks} userId={user} />  // Pasar setTasks al TaskDelete
+      ))}
     </div>
   );
 };
