@@ -30,16 +30,19 @@ const App = () => {
   };
 
   return (
-    <div className="container">
-      <h1>Task Manager</h1>
+    <div>
+      <div className="header">
+        <h1>Task Manager</h1>
+        <button className="btn-style" onClick={handleSignOut}>Sign Out</button>
+      </div>
+      <div className="main-view">
       {user ? (
-        <>
+        <div>
           <TaskForm userId={user.uid} />
           <TaskList userId={user.uid} />
-          <button onClick={handleSignOut}>Sign Out</button>
-        </>
+        </div>
       ) : (
-        <div className="container-button">
+        <div className="auth-view">
           <div>
             {showSignup ? <Signup /> : <Login />}
           </div>
@@ -50,6 +53,7 @@ const App = () => {
           </button>
         </div>
       )}
+      </div>
     </div>
   );
 };

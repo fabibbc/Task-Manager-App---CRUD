@@ -1,74 +1,81 @@
-// src/components/TaskDelete.js
 import { deleteDoc, updateDoc, doc } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { useState } from "react";
-import PropTypes from "prop-types";  // Importa PropTypes
-import Edit from '../img/editar.png';
-import Delete from '../img/borrar.png';
+import PropTypes from "prop-types";  // Import PropTypes
 
 const TaskDelete = ({ task, setTasks, userId }) => {
-  console.log(userId);
-  const [isEditing, setIsEditing] = useState(false);  // Estado para controlar si estamos editando la tarea
-  const [newTitle, setNewTitle] = useState(task.title);  // Estado para el nuevo título
+  const [isEditing, setIsEditing] = useState(false);  // State to control editing mode
+  const [newTitle, setNewTitle] = useState(task.title);  // State for the new task title
 
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  // Function to handle the deletion of the task
   const handleDelete = async () => {
     try {
       const taskRef = doc(db, userId.userId, task.id);
-      await deleteDoc(taskRef); // Eliminar de Firestore
-      setTasks((prevTasks) => prevTasks.filter((t) => t.id !== task.id)); // Actualizar el estado local
+      await deleteDoc(taskRef); // Delete from Firestore
+      setTasks((prevTasks) => prevTasks.filter((t) => t.id !== task.id)); // Update local state
     } catch (error) {
-      console.error("Error al eliminar la tarea: ", error);
+      console.error("Error deleting task: ", error);
     }
   };
 
+  // Function to handle the task title update
   const handleEdit = async () => {
     try {
       const taskRef = doc(db, userId.userId, task.id);
-      await updateDoc(taskRef, { title: newTitle });  // Actualizar el título de la tarea
+      await updateDoc(taskRef, { title: newTitle });  // Update task title in Firestore
       setTasks((prevTasks) =>
         prevTasks.map((t) => (t.id === task.id ? { ...t, title: newTitle } : t))
-      );  // Actualizar el estado local
-      setIsEditing(false);  // Cerrar el formulario de edición
+      );  // Update local state with new title
+      setIsEditing(false);  // Close edit mode
     } catch (error) {
-      console.error("Error al actualizar la tarea: ", error);
+      console.error("Error updating task: ", error);
     }
   };
 
-
-  // Validación de las props
+  // Validate props using PropTypes
   TaskDelete.propTypes = {
     task: PropTypes.shape({
-      id: PropTypes.string.isRequired,   // Validar que 'id' sea una cadena
-      title: PropTypes.string.isRequired // Validar que 'title' sea una cadena
+      id: PropTypes.string.isRequired,   // Validate that 'id' is a string
+      title: PropTypes.string.isRequired // Validate that 'title' is a string
     }).isRequired,
-    setTasks: PropTypes.func.isRequired  // Validar que 'setTasks' sea una función
+    setTasks: PropTypes.func.isRequired  // Validate that 'setTasks' is a function
   };
 
   return (
-    <li>
+    <div>
       {isEditing ? (
-        <>
+        <div>
           <input
             type="text"
             value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}  // Actualizar el título mientras se edita
+            onChange={(e) => setNewTitle(e.target.value)}  // Update title while editing
           />
-          <button onClick={handleEdit}>Guardar</button>
-          <button onClick={() => setIsEditing(false)}>Cancelar</button>
-        </>
+          <button className="btn-style" onClick={handleEdit}>Save</button>
+          <button className="btn-style" onClick={() => setIsEditing(false)}>Cancel</button>
+        </div>
       ) : (
-        <>
-          <span>{task.title}</span>
-          <button className="btnTaskDelete" onClick={() => setIsEditing(true)}>
-            <img src={Edit} alt="Edit" className="icon" />
-          </button>
-          <button className="btnTaskDelete" onClick={handleDelete}>
-            <img src={Delete} alt="Delete" className="icon" />
-          </button>
-        </>
+        <div className="tasks">
+          <div className="text-tasks">
+            <input
+              type="checkbox"
+              checked={isCompleted}
+              onChange={() => setIsCompleted(!isCompleted)}
+            />
+            <span style={{textDecoration: isCompleted ? "line-through" : "none", color: isCompleted ? "#D6D6D6" : "#EBEBEB", }}>
+              {task.title}
+            </span>
+          </div>
+          <div>
+            <button className="btn-style" onClick={() => setIsEditing(true)}>Edit</button>
+            <button className="btn-style" onClick={handleDelete}>Delete</button>
+          </div>
+        </div>
       )}
-    </li>
+    </div>
   );
 };
 
 export default TaskDelete;
+

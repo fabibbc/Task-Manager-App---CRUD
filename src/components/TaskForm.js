@@ -24,13 +24,8 @@ const TaskForm = (userId) => {
 
   return (
     <form className="form-add-task" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Nueva tarea"
-        value={taskTitle}
-        onChange={(e) => setTaskTitle(e.target.value)}
-      />
-      <button className="form-btn" type="submit">+</button>
+      <input className="input-task" type="text" placeholder="Escribe algo..." value={taskTitle} onChange={(e) => setTaskTitle(e.target.value)}/>
+      <button className="form-btn" type="submit">Agregar</button>
     </form>
   );
 };
